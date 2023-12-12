@@ -1,11 +1,12 @@
-if name == "main":
-    import sys
+import sys
 
-    args = sys.argv[1:]
+if __name__ == "__main__":
+    argv = sys.argv[1:]
+    argc = len(argv)
 
-    if len(args) == 0:
+    if argc == 0:
         print("0 arguments.")
     else:
-        print(f"{len(args)} {'argument' if len(args) == 1 else 'arguments'}:")
-        for i, arg in enumerate(args, 1):
+        print(f"{argc} {'argument' if argc == 1 else 'arguments'}:")
+        for i, arg in enumerate(argv, 1):
             print(f"{i}: {arg}")
