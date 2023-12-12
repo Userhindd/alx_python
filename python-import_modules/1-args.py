@@ -1,4 +1,4 @@
-if _name_ == "_main_":
+if name == "main":
     import sys
 
     args = sys.argv[1:]
