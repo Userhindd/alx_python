@@ -1,30 +1,33 @@
-"""This module defines a Square class.
+Square = __import__('1-square').Square
 
-This class represents a square with a given size.
+my_square_1 = Square(3)
+print(type(my_square_1))
+print(my_square_1.__dict__)
 
-Attributes:
-    __size (int): The size of the square.
-"""
+my_square_2 = Square()
+print(type(my_square_2))
+print(my_square_2.__dict__)
 
-class Square:
-    """Represents a square.
+try:
+    print(my_square_1.size)
+except Exception as e:
+    print(e)
 
-    Attributes:
-        __size (int): The size of the square.
+try:
+    print(my_square_1.__size)
+except Exception as e:
+    print(e)
 
-    Methods:
-        __init__(self, size=0): Initializes a new Square instance with an optional size.
-    """
+try:
+    my_square_3 = Square("3")
+    print(type(my_square_3))
+    print(my_square_3.__dict__)
+except Exception as e:
+    print(e)
 
-    def __init__(self, size=0):
-        """Initializes a new Square instance with an optional size.
-
-        Args:
-            size (int, optional): The size of the square. Defaults to 0.
-
-        Raises:
-            TypeError: If size is not an integer.
-            ValueError: If size is less than 0.
-        """
-        if not isinstance(size, int):
-            raise TypeError("size must be an integer")
+try:
+    my_square_4 = Square(-89)
+    print(type(my_square_4))
+    print(my_square_4.__dict__)
+except Exception as e:
+    print(e)
