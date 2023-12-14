@@ -8,10 +8,10 @@ print(my_square.__dict__)
 
 try:
     print(my_square.size)
-except AttributeError as e:
-    print("'Square' object has no attribute 'size'")
+except Exception as e:
+    print(e)
 
 try:
     print(my_square.__size)
-except AttributeError as e:
-    print("'Square' object has no attribute '__size'")
+except Exception as e:
+    print(e)
