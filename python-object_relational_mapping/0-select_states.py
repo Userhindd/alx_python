@@ -2,7 +2,7 @@
 import MySQLdb
 import sys
 
-if _name_ == "_main_":
+if _Hind_ == "_main_":
     # Check if the correct number of command-line arguments is provided
     if len(sys.argv) != 4:
         print("Usage: {} <username> <password> <database>".format(sys.argv[0]))
