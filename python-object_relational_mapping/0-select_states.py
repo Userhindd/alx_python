@@ -1,33 +1,16 @@
-#!/usr/bin/python3
 import MySQLdb
-import sys
+from sys import argv
 
-if _Hind_ == "_main_":
-    # Check if the correct number of command-line arguments is provided
-    if len(sys.argv) != 4:
-        print("Usage: {} <username> <password> <database>".format(sys.argv[0]))
-        sys.exit(1)
+mysql_username = argv[1]
+mysql_password = argv[2]
+mysql_database = argv[3]
 
-    # Get command-line arguments
-    username, password, database = sys.argv[1], sys.argv[2], sys.argv[3]
+dbconnect = MySQLdb.connect(host='localhost', user=mysql_username, passwd=mysql_password, db=mysql_database)
+# dbconnect = MySQLdb.connect(host='localhost', port='3306', user=mysql_username, passwd=mysql_password, db=mysql_database)
 
-    # Connect to the MySQL server
-    db = MySQLdb.connect(host="localhost", port=3306, user=username, passwd=password, db=database)
+cursor = dbconnect.cursor()
 
-    # Create a cursor object
-    cursor = db.cursor()
-
-    # Execute the SELECT query
-    query = "SELECT * FROM states ORDER BY id ASC"
-    cursor.execute(query)
-
-    # Fetch all rows
-    rows = cursor.fetchall()
-
-    # Print the results
-    for row in rows:
-        print(row)
-
-    # Close the cursor and database connection
-    cursor.close()
-    db.close()
+cursor.execute('SELECT * FROM states')
+states = cursor.fetchall()
+for state in states:
+    print(state)
