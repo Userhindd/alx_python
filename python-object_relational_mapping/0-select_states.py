@@ -1,16 +1,38 @@
 import MySQLdb
-from sys import argv
+import sys
 
-mysql_username = argv[1]
-mysql_password = argv[2]
-mysql_database = argv[3]
+def get_states(username, password, database):
+    # Connect to MySQL server
+    db = MySQLdb.connect(host="localhost", port=3306, user=username, passwd=password, db=database)
 
-dbconnect = MySQLdb.connect(host='localhost', user=mysql_username, passwd=mysql_password, db=mysql_database)
-# dbconnect = MySQLdb.connect(host='localhost', port='3306', user=mysql_username, passwd=mysql_password, db=mysql_database)
+    # Create a cursor object to execute queries
+    cursor = db.cursor()
 
-cursor = dbconnect.cursor()
+    # Execute the query to select all states
+    cursor.execute("SELECT * FROM states ORDER BY id")
 
-cursor.execute('SELECT * FROM states')
-states = cursor.fetchall()
-for state in states:
-    print(state)
+    # Fetch all rows
+    rows = cursor.fetchall()
+
+    # Display the results
+    for row in rows:
+        print(row)
+
+    # Close the cursor and connection
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    # Check if the correct number of command-line arguments is provided
+    if len(sys.argv) != 4:
+        print("Usage: python script.py <username> <password> <database>")
+        sys.exit(1)
+
+ 
+    # Get command-line arguments
+    username, password, database = sys.argv[1], sys.argv[2], sys.argv[3]
+ 
+
+    # Call the function to get and display states
+    get_states(username, password, database)
