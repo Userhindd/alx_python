@@ -1,26 +1,51 @@
+#!/usr/bin/python3
 import MySQLdb
-from sys import argv
+import sys
 
-mysql_username = argv[1]
-mysql_password = argv[2]
-mysql_database = argv[3]
-state_name     = argv[4]
+def filter_cities(username, password, database, state_name):
+    try:
+        # Connect to MySQL server
+        db = MySQLdb.connect(host="localhost", port=3306, user=username, passwd=password, db=database)
 
+        # Create a cursor object using cursor() method
+        cursor = db.cursor()
 
-dbconnect = MySQLdb.connect(host='localhost', port=3306, user=mysql_username, passwd=mysql_password, db=mysql_database)
+        # Execute SQL query to select cities of the given state
+        query = """
+            SELECT cities.name
+            FROM cities
+            JOIN states ON cities.state_id = states.id
+            WHERE states.name = %s
+            ORDER BY cities.id;
+        """
+        cursor.execute(query, (state_name,))
 
-cursor = dbconnect.cursor()
+        # Fetch all the rows in a list of tuples
+        results = cursor.fetchall()
 
+        # Display the results
+        if results:
+            city_names = ', '.join(result[0] for result in results)
+            print(city_names)
+        else:
+            print("No cities found for the given state.")
 
-cursor.execute("SELECT name FROM cities WHERE state_id = (SELECT id  FROM states WHERE BINARY  name = %s) ", [state_name])
-cities = cursor.fetchall()
+    except MySQLdb.Error as e:
+        print("MySQL Error {}: {}".format(e.args[0], e.args[1]))
 
-for i, city in enumerate(cities):
-    print(city[0], end=', ' if i < len(cities)-1 else '\n')
-if not cities:
-    print('')
+    finally:
+        # Close the cursor and database connection
+        cursor.close()
+        db.close()
 
-# Close all cursors
-cursor.close()
-# Close all databases
-dbconnect.close()
+if __name__ == "__main__":
+    # Check if the correct number of arguments is provided
+    if len(sys.argv) != 5:
+        print("Usage: {} <username> <password> <database> <state_name>".format(sys.argv[0]))
+        sys.exit(1)
+
+    # Get command line arguments
+    username, password, database, state_name = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+
+    # Call the filter_cities function
+    filter_cities(username, password, database, state_name)
